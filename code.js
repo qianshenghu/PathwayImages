@@ -210,7 +210,59 @@ $(function () { // on dom ready
         unhighlightall();
         savestate();
     });
-    
+    $("#confirmEdgeType").click(function () {
+        var edgeType = document.getElementById("edgeType");
+        var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
+        var edgeType2;
+        if (edgeSelect == 'Solid') {
+            edgeType2 = 'solid';
+        }else if(edgeSelect == 'Dotted') {
+            edgeType2 = 'dotted';
+        } else if (edgeSelect == 'Dashed') {
+            edgeType2 = 'dashed';
+        }
+        for (var i = 0; i < selectedEdge.length; i++) {
+            console.log(selectedEdge[i]);
+            cy.style()
+                .selector('#'+selectedEdge[i])
+                    .css({
+                        'line-style': edgeType2
+                    })
+                .update();
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+    });
+    $("#confirmEdgeShape").click(function () {
+        var edgeType = document.getElementById("edgeShape");
+        var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
+        var edgeShape;
+        if (edgeSelect == 'Straight') {
+            edgeShape = 'bezier';
+        }else if(edgeSelect == 'Curved') {
+            edgeShape = 'unbundled-bezier';
+        } else if (edgeSelect == 'Jagged') {
+            edgeShape = 'segments';
+        }
+        for (var i = 0; i < selectedEdge.length; i++) {
+            console.log(selectedEdge[i]);
+            cy.style()
+                .selector('#'+selectedEdge[i])
+                    .css({
+                        'curve-style': edgeShape,
+                        'segment-distances': '40 -40',
+                        'segment-weights': '0.25 0.75',
+                        'control-point-distances': 150,
+                        'control-point-weights': 0.1
+                    })
+                .update();
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+    });
+
     $("#deletenode").click(function () {
         for (var k = 0; k < selectedArray.length; k++) {
             // console.log(selectedArray[i]);
