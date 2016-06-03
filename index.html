@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<link href="style.css" rel="stylesheet" />
+<meta charset=utf-8 />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+<title>Images</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>
+<script src="code.js"></script>
+</head>
+<body>
+<div id="cy"></div>
+<div id="topmenu">
+   <button id="createnode">Create Node</button>
+    <button id="createedge">Create Edge</button>
+    <button id="deletenode">Delete Node</button>
+    <button id="deleteedge">Delete Edge</button>
+    <button id="exportjson">Export Json</button>
+    <button id="undo">Undo</button>
+    <button id="redo">Redo</button>
+    <input type="file" id="files">
+    <button id="load">Load</button>
+    <input type="file" id="rawfiles">
+    <button id="loadrawfile">Load Raw File</button>
+    <button id="loadspray">Load Spray</button>
+    <button id="bundle">Bundle</button>
+</div>
+ <div id="cyside">
+        <form>
+            <select id="mySelect">
+                <option>Tumor</option>
+                <option>NK Cell</option>
+                <option>CD8+ Treg</option>
+                <option>MSDC</option>
+                <option>Progenitor</option>
+                <option>CD8+ T Cell</option>
+                <option>CD4+ T Cell</option>
+                <option>Regulatory DC</option>
+                <option>Activated DC</option>
+                <option>DC</option>
+                <option>TAM(M2)</option>
+                <option>Macrophage</option>
+                <option>CD4+ Treg</option>
+            </select>
+            <br><br>
+
+        </form>
+        <button id="button2">Confirm</button>
+        <p id="hello"></p>
+
+    </div>
+    <div id="edgeSide">
+    	<p>
+    		Add Gene: <input type="text" id="geneAdder" value="Mickey">
+    	</p>
+    	<button id="addGene">Confirm</button>
+    	<br>
+    	<form>
+            <select id="edgeSelect">
+                <option>Activator</option>
+                <option>Inhibitor</option>
+            </select>
+            <br><br>
+
+        </form>
+        <button id="makeedge">Make Edge</button>
+    </div>
+   <div id="changeProp">
+        <p>Color:</p> <form>
+            <select id="mySelectColor">
+                <option>red</option>
+                <option>blue</option>
+                <option>yellow</option>
+                <option>orange</option>
+                <option>green</option>
+                <option>purple</option>
+            </select>
+
+        </form>
+        <p>Shape:</p> 
+          <form>
+            <select id="mySelectShape">
+                <option>square</option>
+                <option>roundrectangle</option>
+                <option>triangle</option>
+                <option>pentagon</option>
+                <option>ellipse</option>
+            </select>
+            <br>
+
+        </form>
+        <p>Size:</p> 
+          <form>
+            <select id="mySelectSize">
+                <option>50</option>
+                <option>100</option>
+                <option>150</option>
+                <option>200</option>
+                <option>250</option>
+                <option>300</option>
+            </select>
+            <br>
+
+        </form>
+        <br>
+        <button id="colorButton">Confirm</button>
+        <br>
+		<button id="nameChange">Change Node Names</button>
+		<br><p>Change Node Type:</p>
+		<form>
+            <select id="mySelectType">
+                <option>Tumor</option>
+                <option>NK Cell</option>
+                <option>CD8+ Treg</option>
+                <option>MSDC</option>
+                <option>Progenitor</option>
+                <option>CD8+ T Cell</option>
+                <option>CD4+ T Cell</option>
+                <option>Regulatory DC</option>
+                <option>Activated DC</option>
+                <option>DC</option>
+                <option>TAM(M2)</option>
+                <option>Macrophage</option>
+                <option>CD4+ Treg</option>
+            </select>
+            <br><br>
+
+        </form>
+        <button id="confirmType">Confirm Type</button>
+    </div>
+    </div>
+    <div id="infoDiv">
+    <p id="name"></p>
+    <p id="type"></p>
+    <p id="shape"></p>
+    <p id="size"></p>
+    <p id="color1"></p>
+    </div>
+</body>
+</html>

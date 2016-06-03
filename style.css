@@ -1,0 +1,110 @@
+body { 
+  font: 14px helvetica neue, helvetica, arial, sans-serif;
+  background-color: azure;
+}
+
+#cy {
+  height: 90%;
+  width: 100%;
+  position: absolute;
+  left: 15%;
+  top: 10%;
+  background-color: #EFFBFB;
+}
+
+#cymenu {
+  height: 10%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0%;
+  background-color: #EDF1FA;
+  border-right: 1px solid #ccc;
+}
+
+#cyside {
+
+  height: 90%;
+
+  width: 15%;
+
+  position: absolute;
+
+  left: 0;
+
+  top: 10%;
+
+  background-color: azure;
+
+  border-right: 1px solid #ccc;
+
+  border-top: 1px solid #ccc;
+ 
+}
+
+#edgeSide {
+
+  height: 90%;
+
+  width: 15%;
+
+  position: absolute;
+
+  left: 0;
+
+  top: 10%;
+
+  background-color: azure;
+
+  border-right: 1px solid #ccc;
+
+  border-top: 1px solid #ccc;
+  display: none;
+  padding-left:5px;
+}
+
+#changeProp {
+
+  height: 90%;
+
+  width: 15%;
+
+  position: absolute;
+
+  left: 0;
+
+  top: 10%;
+
+  background-color: azure;
+
+  border-right: 1px solid #ccc;
+
+  border-top: 1px solid #ccc;
+  display: none;
+}
+
+#infoDiv {
+
+  height: 90%;
+
+  width: 15%;
+
+  position: absolute;
+
+  left: 0;
+
+  top: 10%;
+
+  background-color: azure;
+
+  border-right: 1px solid #ccc;
+
+  border-top: 1px solid #ccc;
+  display: none;
+}
+
+#mySelectProperty{
+
+    display: inline;
+
+}
