@@ -5,19 +5,30 @@ $(function () { // on dom ready
     var selectedEdge = [];
     var jsonArray = [];
     var jsonCounter = 0;
-   
+    var createNode = true;
+    var changeProp = false;
+    var info = false;
+    // photos from flickr with creative commons license
+    // document.getElementById("menu").innerHTML = "<button name=\"sayhi\">sayhi</button>";
+
     function hideMenus() {
         document.getElementById("cyside").style.display = "none";
+        createNode = false;
         document.getElementById("changeProp").style.display = "none";
-		 document.getElementById("infoDiv").style.display = "none";
-		 document.getElementById("edgeSide").style.display = "none";
+        changeProp = false;
     }
     $("#createnode").click(function () {
-       hideMenus();
+        document.getElementById("infoDiv").style.display = "none";
+
+        document.getElementById("changeProp").style.display = "none";
+
+
         document.getElementById("cyside").style.display = "inline";
+        createNode = true;
+
+
+
     });
-    
-    
     $("#button2").click(function () {
         numnodes = cy.nodes().length;
         var obj = document.getElementById("mySelect"); 
@@ -66,7 +77,7 @@ $(function () { // on dom ready
             default:
                 var imageurl = 'http://i.imgur.com/7UT3Gni.jpg';
         }
-        cy.add([{ group: "nodes", data: { id: "n" + numnodes, name: animal, type: animal }, position: { x: 550, y: 250 } }]);
+        cy.add([{ group: "nodes", data: { id: "n" + numnodes, name: animal, type: animal, parent:"" }, position: { x: 550, y: 250 } }]);
         //   cy.nodes()[numnodes].css("background-image", "" + imageurl)
         cy.style()
        .selector('#n' + numnodes)
@@ -179,38 +190,15 @@ $(function () { // on dom ready
     });
 
     $("#createedge").click(function () {
-       hideMenus();
-    document.getElementById("edgeSide").style.display = "inline";
-       
-    });
-    
-    
-    $("#makeedge").click(function () {
-    	var edgeType = document.getElementById("edgeSelect");
-        var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
-        var edgeShape;
-        console.log(edgeSelect);
-       if(edgeSelect == 'Activator'){
-        	edgeShape = 'triangle';}
-        else{
-        	edgeShape = 'tee';}
         numedges = cy.edges().length;
         for (var i = 0; i < selectedArray.length - 1; i++) {
-            cy.add([{ group: "edges", data: { id: "e" + numedges, name: "hi", source: "" + selectedArray[i], target: "" + selectedArray[i + 1] } }])
-           cy.style()
-              .selector('#' + "e" + numedges)
-                .css({
-                    'target-arrow-shape': edgeShape
-            
-                })
-               .update();
+            cy.add([{ group: "edges", data: { id: "e" + numedges, source: "" + selectedArray[i], target: "" + selectedArray[i + 1] } }])
             numedges++;
         }
         jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
         unhighlightall();
         savestate();
     });
-    
     $("#deletenode").click(function () {
         for (var k = 0; k < selectedArray.length; k++) {
             // console.log(selectedArray[i]);
@@ -319,32 +307,18 @@ $(function () { // on dom ready
             }
         }
     });
-    
-    $("#addGene").click(function () {
-   
-    var gene = document.getElementById("geneAdder").value;
-    console.log(gene);
-    for (var k = 0; k < selectedEdge.length; k++) {
-    	   var edgeAddGene = cy.getElementById(selectedEdge[k]);
-    	   var newLabel = edgeAddGene.data('name') + "\n" + gene;
-    	   console.log(newLabel);
-    	   edgeAddGene.data('name',newLabel);
-    	}
-    });
-
     $("#bundle").click(function () {
         var node;
         cy.add([{ group: "nodes", data: { id: "n" + numnodes, name: "n" + numnodes, type: "" }, position: { x: 550, y: 250 } }]);
         for (var i = 0; i < selectedArray.length; i++) {
             node = cy.getElementById(selectedArray[i]);
             node.move({
-                parent: 'n' + numnodes
+                parent: 'n'+numnodes
             })
         }
         unhighlightall();
         numnodes++;
     });
-    
     var cy = cytoscape({
         container: document.getElementById('cy'),
 
@@ -362,9 +336,8 @@ $(function () { // on dom ready
                 'border-width': 3,
                 'border-opacity': 0.5,
                 'content': 'data(name)'
-               
             })
-              .selector('$node > node')
+         .selector('$node > node')
             .css({
                 'padding-top': '10px',
                 'padding-left': '10px',
@@ -374,17 +347,15 @@ $(function () { // on dom ready
                 'text-halign': 'center',
                 'background-color': '#bbb',
                 'shape': 'ellipse'
-            })
+      })
           .selector('edge')
             .css({
-            	'content': 'data(name)',
                 'width': 6,
                 'target-arrow-shape': 'triangle',
                 'curve-style': 'bezier',
-                'line-color': 'darkturquoise',
-                'target-arrow-color': 'darkturquoise',
-                'text-wrap': 'wrap'
-                
+                'line-color': 'blue',
+                'target-arrow-color': 'blue',
+                'opacity': .5
             }),
 
         elements: {
@@ -437,16 +408,61 @@ $(function () { // on dom ready
 
 
     cy.on('cxttap', 'node', function (evt) {
-		hideMenus();
+
+        document.getElementById("infoDiv").style.display = "none";
+
+        document.getElementById("cyside").style.display = "none";
+
 
         document.getElementById("changeProp").style.display = "inline";
+        changeProp = true;
 
+
+        /*  var node = evt.cyTarget;
+          var choice1 = prompt("please type in what you would like to change(color, size, type, name, shape):");
+          switch (choice1) {
+              case 'color':
+                  var choice2 = prompt("please choose a color:");
+                  node.css('border-color', choice2)
+                  break;
+              case 'size':
+                  var choice2 = prompt("please type in size(numbers only):");
+                  cy.style()
+                  .selector('#' + node.id())
+                   .css({
+                      'height': choice2,
+                      'width': choice2
+                     
+                  })
+                 .update();
+                 /* node.css('height', choice2)
+                  node.css('width', choice2)
+                  break;
+              case 'type':
+                  var choice2 = prompt("please choose type(mammal, bird):");
+                  node.data("type", choice2)
+                  console.log(node.data('type'));
+                  break;
+              case 'name':
+                  var choice2 = prompt("please type in a name");
+                  node.data("name", choice2)
+                  break;
+              case 'shape':
+                  var choice2 = prompt("please choose a shape( ellipse, rectangle, octagon, pentagon, triangle):");
+                  node.css('shape', choice2)
+                  break;
+          }*/
     })
 
     cy.on('taphold', 'node', function (evt) {
-		hideMenus();
+        document.getElementById("cyside").style.display = "none";
+
+        document.getElementById("changeProp").style.display = "none";
+
+
 
         document.getElementById("infoDiv").style.display = "inline";
+        info = true;
 
 
         var infoName = document.getElementById("name");
@@ -588,6 +604,94 @@ $(function () { // on dom ready
         },
     });
 
+    /* $("button").click(function createnode() {
+         var imageurl = prompt("Please enter image URL:");
+         cy.add([{ group: "nodes", data: { id: "n" + numnodes, name: "n" + numnodes, type: "none" }, position: { x: 900, y: 350 } }]);
+         cy.nodes()[numnodes].css("background-image", "" + imageurl)
+         numnodes++;
+         jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+         unhighlightall();
+         savestate();
+     });
+
+
+    /*cymenu.on('click', '#DeleteNode', function (evt) {
+        console.log(selectedArray);
+        for (var k = 0; k < selectedArray.length; k++) {
+            // console.log(selectedArray[i]);
+            var removeElement = cy.getElementById(selectedArray[k]);
+            cy.remove(removeElement);
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+
+    })
+
+    /*cymenu.on('click', '#CreateEdge', function (evt) {
+        console.log(selectedArray);
+        for (var i = 0; i < selectedArray.length - 1; i++) {
+            cy.add([{ group: "edges", data: { id: "e" + numedges, source: "" + selectedArray[i], target: "" + selectedArray[i + 1] } }])
+            numedges++;
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+    })
+
+    /*cymenu.on('click', '#DeleteEdge', function (evt) {
+        for (var k = 0; k < selectedEdge.length; k++) {
+            // console.log(selectedArray[i]);
+            var removeElement = cy.getElementById(selectedEdge[k]);
+            cy.remove(removeElement);
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+    })
+    cymenu.on('click', '#ExportJson', function (evt) {
+        var jsonfile = cy.json();
+        var jsontxt = JSON.stringify(jsonfile)
+        download('jsonFile.txt', jsontxt);
+    })
+    cymenu.on('click', '#ImportJson', function (evt) {
+        var filetext = prompt("Please enter the text file:");
+        var filejson = JSON.parse(filetext);
+        cy.json(filejson);
+        selectedArray = [];
+        selectedEdge = [];
+    })
+   /* cymenu.on('click', '#Undo', function (evt) {
+        if (jsonCounter > 0) {
+            jsonCounter--;
+            cy.json(jsonArray[jsonCounter]);
+            unhighlightall();
+        }
+        console.log(jsonCounter);
+        console.log(jsonArray[0]);
+    })
+    cymenu.on('click', '#Redo', function (evt) {
+        jsonCounter++;
+        cy.json(jsonArray[jsonCounter]);
+        unhighlightall();
+        console.log(cy.nodes().length);
+        console.log(jsonArray[0]);
+    })
+    cymenu.on('click', '#ExportSpray', function (evt) {
+        var node = evt.cyTarget;
+        var spraytext = "";
+        for (var i = 0; i < cy.nodes().length; i++)
+            spraytext += "" + node.data('name') + "~" + node.data('type') + "~" + node.css('shape') + "~" + node.css('width') + "~" + node.css('border-color');
+        download('spraytext.txt', spraytext)
+    })
+    cymenu.on('click', '#ImportJson', function (evt) {
+
+    })*/
+
+
+
+
+
     function highlightNode(nodeid) {
         cy.style()
         .selector('#' + nodeid)
@@ -613,9 +717,9 @@ $(function () { // on dom ready
         cy.style()
         .selector('#' + edgeid)
                 .css({
-                    'line-color': 'lightcoral',
-                    'width': 8,
-                    'target-arrow-color': 'lightcoral'
+                    'line-color': 'red',
+                    'width': 10,
+                    'target-arrow-color': 'red'
                 })
         .update();
     };
@@ -623,9 +727,9 @@ $(function () { // on dom ready
         cy.style()
         .selector('#' + edgeid)
           .css({
-              'line-color': 'darkturquoise',
+              'line-color': 'blue',
               'width': 6,
-              'target-arrow-color': 'darkturquoise'
+              'target-arrow-color': 'blue'
           })
          .update();
     };
@@ -657,9 +761,70 @@ $(function () { // on dom ready
         }
     }
 
+
+    // cy init
+
+
+    //cy.$('#ladybug').remove();
+
+    /*cy.on('tap', 'node', function(){
+      var nodes = this;
+      var tapped = nodes;
+      var food = [];
+      
+      nodes.addClass('eater');
+      
+      for(;;){
+        var connectedEdges = nodes.connectedEdges(function(){
+          return !this.target().anySame( nodes );
+        });
+        
+        var connectedNodes = connectedEdges.targets();
+        
+        Array.prototype.push.apply( food, connectedNodes );
+        
+        nodes = connectedNodes;
+        
+        if( nodes.empty() ){ break; }
+      }
+            
+      var delay = 0;
+      var duration = 500;
+      for( var i = food.length - 1; i >= 0; i-- ){ (function(){
+        var thisFood = food[i];
+        var eater = thisFood.connectedEdges(function(){
+          return this.target().same(thisFood);
+        }).source();
+                
+        thisFood.delay( delay, function(){
+          eater.addClass('eating');
+        } ).animate({
+          position: eater.position(),
+          css: {
+            'width': 10,
+            'height': 10,
+            'border-width': 0,
+            'opacity': 0
+          }
+        }, {
+          duration: duration,
+          complete: function(){
+            thisFood.remove();
+          }
+        });
+        
+        delay += duration;
+      })(); } // for
+      
+    }); // on tap */
 })// on dom ready
 
-
+/*function sayhi() {
+    $("sayhi").on("click", function () {
+        console.log("HELLO WORLD");
+    })
+    console.log("SAYHI")
+  }*/
 function loadFileAsText() {
     var fileToLoad = document.getElementById("fileToLoad").files[0];
 
