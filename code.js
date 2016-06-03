@@ -213,6 +213,30 @@ $(function () { // on dom ready
     $("#confirmEdgeType").click(function () {
         var edgeType = document.getElementById("edgeType");
         var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
+        var edgeType2;
+        if (edgeSelect == 'Solid') {
+            edgeType2 = 'solid';
+        }else if(edgeSelect == 'Dotted') {
+            edgeType2 = 'dotted';
+        } else if (edgeSelect == 'Dashed') {
+            edgeType2 = 'dashed';
+        }
+        for (var i = 0; i < selectedEdge.length; i++) {
+            console.log(selectedEdge[i]);
+            cy.style()
+                .selector('#'+selectedEdge[i])
+                    .css({
+                        'line-style': edgeType2
+                    })
+                .update();
+        }
+        jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
+        unhighlightall();
+        savestate();
+    });
+    $("#confirmEdgeShape").click(function () {
+        var edgeType = document.getElementById("edgeShape");
+        var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
         var edgeShape;
         if (edgeSelect == 'Straight') {
             edgeShape = 'bezier';
@@ -237,11 +261,6 @@ $(function () { // on dom ready
         jsonArray.splice(jsonCounter + 1, jsonArray.length - jsonCounter);
         unhighlightall();
         savestate();
-    });
-    $("#confirmEdgeType").click(function () {
-        var edgeType = document.getElementById("edgeType");
-        var edgeSelect = edgeType.options[edgeType.selectedIndex].text;
-        var edgeShape;
     });
 
     $("#deletenode").click(function () {
